@@ -119,7 +119,7 @@ int main ( void )
 //
 //	liste * list = genererListe(tab, 9);
 
-	liste * list = genererListeAleatoire(100000, -RAND_MAX/2, RAND_MAX/2);
+	liste * list = genererListeAleatoire(10000, -RAND_MAX/2, RAND_MAX/2);
 
 	AfficherListe(list);
 
