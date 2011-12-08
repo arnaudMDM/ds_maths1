@@ -1,16 +1,16 @@
 CC=gcc
 EDL=gcc
-RM=del
+RM=rm
 
 CCFLAGS=-Wall
 LDFLAGS=
-RMFLAGS=
+RMFLAGS=-f
 LIBS=
 
-EXE=TriFusion.exe
-INTERFACE=TriFusion.h
-REALISATION=$(INTERFACE:.h=.c)
-OBJ=$(REALISATION:.c=.o)
+EXE=TpReferencesCroisees
+INTERFACE=AssocRefFichier.h References.h
+REALISATION=$(INTERFACE:.h=.cpp) Main.cpp
+OBJ=$(REALISATION:.cpp=.o)
 
 $(EXE): $(OBJ)
 	$(EDL) $(LDFLAGS) -o $@ $^ $(LIBS)
@@ -18,7 +18,11 @@ $(EXE): $(OBJ)
 clean:
 	$(RM) $(RMFLAGS) $(EXE) $(OBJ)
 
-TriFusion.o: TriFusion.h
+Main.o: References.h
+	
+References.o: References.h AssocRefFichier.h
 
-%.o: %.c
+AssocRefFichier.o: AssocRefFichier.h
+
+%.o: %.cpp
 	$(CC) $(CCFLAGS) -c $<
