@@ -8,7 +8,7 @@ RMFLAGS=
 LIBS=
 
 EXE=TriFusion.exe
-INTERFACE=Trifusion.h
+INTERFACE=TriFusion.h
 REALISATION=$(INTERFACE:.h=.c)
 OBJ=$(REALISATION:.c=.o)
 
