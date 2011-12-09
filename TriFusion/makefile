@@ -7,10 +7,10 @@ LDFLAGS=
 RMFLAGS=-f
 LIBS=
 
-EXE=TpReferencesCroisees
-INTERFACE=AssocRefFichier.h References.h
-REALISATION=$(INTERFACE:.h=.cpp) Main.cpp
-OBJ=$(REALISATION:.cpp=.o)
+EXE=tri_fusion
+INTERFACE=TriFusion.h
+REALISATION=$(INTERFACE:.h=.c)
+OBJ=$(REALISATION:.c=.o)
 
 $(EXE): $(OBJ)
 	$(EDL) $(LDFLAGS) -o $@ $^ $(LIBS)
@@ -18,11 +18,7 @@ $(EXE): $(OBJ)
 clean:
 	$(RM) $(RMFLAGS) $(EXE) $(OBJ)
 
-Main.o: References.h
-	
-References.o: References.h AssocRefFichier.h
+TriFusion.o: TriFusion.h
 
-AssocRefFichier.o: AssocRefFichier.h
-
-%.o: %.cpp
+%.o: %.c
 	$(CC) $(CCFLAGS) -c $<
