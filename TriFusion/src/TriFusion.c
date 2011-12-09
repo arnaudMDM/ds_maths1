@@ -137,7 +137,6 @@ void afficher ( liste * list )
 liste * generer_liste ( int * tab, int nbElem )
 {
 	liste * list = NULL;
-	list = initialiser ( .0, list );
 
 	if ( nbElem > 0 )
 	{
@@ -163,7 +162,6 @@ liste * generer_liste ( int * tab, int nbElem )
 liste * generer_liste_aleatoire ( long nbElem, int min, int max )
 {
 	liste * list = NULL;
-	list = initialiser ( .0, list );
 
 	if ( nbElem > 0 )
 	{
@@ -223,11 +221,14 @@ int main ( int argc, char *argv[] )
 				int tab[] = {
 				        18, 8, 5, 11, 9, 7, 6, 15, 16 };
 				liste * list = generer_liste ( tab, 9 );
+
 				liste * list2 = separation ( list );
+
 				int tabVerif[] = {
 				        18, 5, 9, 6, 16 };
 				int tabVerif2[] = {
 				        8, 11, 7, 15 };
+
 				liste * listVerif = generer_liste ( tabVerif, 5 );
 				liste * listVerif2 = generer_liste ( tabVerif2, 4 );
 
@@ -259,11 +260,15 @@ int main ( int argc, char *argv[] )
 				        5, 7, 9, 11, 20 };
 				int tab2[] = {
 				        4, 6, 10, 21 };
+
 				int tabVerif[] = {
 				        4, 5, 6, 7, 9, 10, 11, 20, 21 };
+
 				liste * list1 = generer_liste ( tab1, 5 );
 				liste * list2 = generer_liste ( tab2, 4 );
+
 				liste * listVerif = generer_liste ( tabVerif, 9 );
+
 				liste * listFusion = fusion ( list1, list2 );
 
 				if ( egalite_liste ( listFusion, listVerif ) != 0 )
@@ -274,6 +279,11 @@ int main ( int argc, char *argv[] )
 				{
 					puts ( "Test 2 faux (fusion)" );
 				}
+
+				supprimer_liste ( list1 );
+				supprimer_liste ( list2 );
+				supprimer_liste ( listVerif );
+				supprimer_liste ( listFusion );
 			}
 
 			//Test 3 vérifie la méthode tri_fusion
@@ -281,12 +291,10 @@ int main ( int argc, char *argv[] )
 				int tab[] = {
 				        18, 8, 5, 11, 9, 7, 6, 15, 16 };
 				liste * list = generer_liste ( tab, 9 );
+
 				int tabVerif[] = {
 				        5, 6, 7, 8, 9, 11, 15, 16, 18 };
 				liste * listVerif = generer_liste ( tabVerif, 9 );
-
-				nbComparaisons = 0;
-				nbPermutations = 0;
 
 				list = tri_fusion ( list );
 
@@ -298,6 +306,9 @@ int main ( int argc, char *argv[] )
 				{
 					puts ( "Test 3 faux (tri_fusion)" );
 				}
+
+				supprimer_liste ( list );
+				supprimer_liste ( listVerif );
 			}
 
 			//Test 4 vérifie la méthode tri_fusion_inverse
@@ -305,9 +316,11 @@ int main ( int argc, char *argv[] )
 				int tab[] = {
 				        18, 8, 5, 11, 9, 7, 6, 15, 16 };
 				liste * list = generer_liste ( tab, 9 );
+
 				int tabVerif[] = {
 				        18, 16, 15, 11, 9, 8, 7, 6, 5 };
 				liste * listVerif = generer_liste ( tabVerif, 9 );
+
 				list = tri_fusion_inverse ( list );
 
 				if ( egalite_liste ( list, listVerif ) != 0 )
@@ -318,6 +331,9 @@ int main ( int argc, char *argv[] )
 				{
 					puts ( "Test 4 faux (tri_fusion_inverse)" );
 				}
+
+				supprimer_liste ( list );
+				supprimer_liste ( listVerif );
 			}
 
 			return 0;
@@ -338,12 +354,15 @@ int main ( int argc, char *argv[] )
 
 			fprintf ( f, "NbElem;NbComp;NbPerm;TpsExec\n" );
 
+			// On ne parvient jamais au terme de cette boucle. Cependant, les
+			// résultats sont conservés dans le fichier valeurs.cvs
 			for ( i = 1; i <= 10000000; i += 1000 )
 			{
 
 				list = generer_liste_aleatoire ( i, -100000, 100000 );
 
 				t1 = clock ( );
+
 				nbComparaisons = 0;
 				nbPermutations = 0;
 
@@ -358,7 +377,10 @@ int main ( int argc, char *argv[] )
 				fprintf ( f, "%ld;%ld;%ld;%f\n", i, nbComparaisons,
 				        nbPermutations, temps );
 			}
+
 			fclose ( f );
+
+			supprimer_liste ( list );
 
 			return 0;
 		}
@@ -382,6 +404,7 @@ int main ( int argc, char *argv[] )
 				        100000 );
 			}
 
+
 			t1 = clock ( );
 
 			for ( i = 0; i < nbListes; i++ )
@@ -397,6 +420,7 @@ int main ( int argc, char *argv[] )
 			        "Temps d'exécution pour %d tris de listes aléatoires de %d éléments : %f secs\n",
 			        nbListes, nbElem, temps );
 
+
 			t1 = clock ( );
 
 			for ( i = 0; i < nbListes; i++ )
@@ -411,6 +435,7 @@ int main ( int argc, char *argv[] )
 			printf (
 			        "Temps d'exécution pour %d tris de listes déjà triées de %d éléments : %f secs\n",
 			        nbListes, nbElem, temps );
+
 
 			for ( i = 0; i < nbListes; i++ )
 			{
@@ -432,15 +457,24 @@ int main ( int argc, char *argv[] )
 			        "Temps d'exécution pour %d tris de listes triées en sens inverse de %d éléments : %f secs\n",
 			        nbListes, nbElem, temps );
 
+
+			for ( i = 0; i < nbListes; i++ )
+			{
+				supprimer_liste ( tabListe[i] );
+			}
+
 			return 0;
 		}
 	}
 
-	printf("Veuillez fournir un argument pour lancer les différents tests.\n\n");
-	printf("Les arguments possibles sont :\n");
-	printf("\t1 : Tests fonctionnels\n");
-	printf("\t2 : Tests de performances avec un nombre d'éléments croissant, écriture des résultats dans le fichier valeurs.csv\n");
-	printf("\t3 : Tests de performances sur des listes aléatoires, triées et triées en sens inverse\n");
+	printf (
+	        "Veuillez fournir un argument pour lancer les différents tests.\n\n" );
+	printf ( "Les arguments possibles sont :\n" );
+	printf ( "\t1 : Tests fonctionnels\n" );
+	printf (
+	        "\t2 : Mesures de performances avec un nombre d'éléments croissant, écriture des résultats dans le fichier valeurs.csv\n" );
+	printf (
+	        "\t3 : Mesures de performances sur des listes aléatoires, triées et triées en sens inverse\n" );
 
 	return 0;
 }
